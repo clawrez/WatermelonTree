@@ -1,0 +1,121 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+
+    <title>Watermelon Tree!</title>
+</head>
+
+<body>
+    <div id="app">
+        <div class="renovate-button locked" @click="renovate()">
+            Renovate. ({{ player.renovate.cost }} 💵) <br>
+            Resets your garden, but grants you {{ player.renovate.renovatePointYield }} 🧱.
+        </div>
+        <div class="currency-container">
+            <div class="watermelon-currency" style="font-weight: bold;">
+                You have {{ zeroformat(player.watermelons) }} 🍉 and {{ twoformat(player.money) }} 💵.
+            </div>
+        </div>
+        <div class="click-container">
+            <div class="click-button wait-button" @click="waitADay()">
+                Wait a day.
+            </div>
+            <div class="click-button sell-button" @click="sell()">
+                Sell your stock.
+            </div>
+        </div>
+
+        <div class="menuButtons-container">
+            <div class="menu-button main-menu-button" @click="mainMenu()">
+                Main
+            </div>
+            <div class="menu-button renovation-menu-button locked" @click="renovationMenu()">
+                Renovation
+            </div>
+            <div class="menu-button options-menu-button" @click="optionsMenu()">
+                Options
+            </div>
+        </div>
+
+        <div class="big-container" id="main-container">
+            
+            <div class="stats-container">
+                <span class="stat-Heading" style="font-weight: bold;">Statistics</span>
+                <span class="stat-yieldPerDay">You grow {{ zeroformat(player.watermelonYield) }} 🍉 per day.</span>
+                <span class="stat-watermelonSellPrice">One 🍉 sells for {{ twoformat(player.watermelonSellPrice) }} 💵.</span>
+                <span class="stat-gardenCapacity">Your garden can hold a total of 20 🍉.</span>
+            </div>
+            
+            <div class="treeUpgrade-container">
+                <div class="treeUpgrade-concontainer">
+                    <div class="container-heading treeUpgradesHeading">Upgrade your 🍉 yield with more agricultural knowledge!<br>(Lots of 'Watermelon for Dummies')</div>
+                    <div class="treeUpgrade" v-for="(treeUpgrades, idx) in player.treeUpgrades">
+                        <h4>{{ treeUpgrades.name }} ({{ treeUpgrades.bought }})</h4>
+                        <span class="treeUpgrade-cost">{{ twoformat(treeUpgrades.cost) }} 💵</span>
+                        <span class="treeUpgrade-yield">+{{ zeroformat(treeUpgrades.yield*treeUpgrades.bought) }} 🍉 per day</span>
+                        <div class="buy-container"><span class="buy-treeUpgrade" @click="buywatermelonTreeUpgrade(idx)">Buy 1</span> • <span class="buy-treeUpgrade" @click="buyMAXwatermelonTreeUpgrade(idx)">Buy Max</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="moneyUpgrade-container">
+                <div class="moneyUpgrade-concontainer">
+                    <div class="container-heading moneyUpgradesHeading">Increase your 💵 profit with very legal genetic altercations!<br>(It's the thought that counts)</div>
+                    <div class="moneyUpgrade" v-for="(moneyUpgrades, idx) in player.moneyUpgrades">
+                        <h4>{{ moneyUpgrades.name }} ({{ moneyUpgrades.bought }})</h4>
+                        <span class="moneyUpgrade-cost">{{ twoformat(moneyUpgrades.cost) }} 💵</span>
+                        <span class="moneyUpgrade-yield">+{{ twoformat(moneyUpgrades.yield*moneyUpgrades.bought) }} 💵 per 🍉</span>
+                        <div class="buy-container"><span class="buy-moneyUpgrade" @click="buywatermelonMoneyUpgrade(idx)">Buy 1</span> • <span class="buy-moneyUpgrade" @click="buyMAXwatermelonMoneyUpgrade(idx)">Buy Max</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="automationUpgrade-container">
+                <div class="automationUpgrade-concontainer">
+                    <div class="container-heading automationUpgradesHeading">Automate different processes to focus on other very important things!<br>(You lazy cunt)</div>
+                    <div class="automationUpgrade" id="autoUp0">
+                        <h4>{{ player.automationUpgrades[0].name }} ({{ player.automationUpgrades[0].bought }})</h4>
+                        <span class="automationUpgrade-cost">{{ twoformat(player.automationUpgrades[0].cost) }} 💵</span>
+                        <span class="automationUpgrade-effect">Wait {{ oneformat(player.automationUpgrades[0].effect*player.automationUpgrades[0].bought) }} days every real second</span>
+                        <div class="buy-container"><span class="buy-automationUpgrade" @click="buyFirstAutomationUpgrade()">Buy 1</span> • <span class="buy-moneyUpgrade" @click="buyMAXFirstAutomationUpgrade()">Buy Max</span></div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <div class="big-container" id="renovation-container">
+            <div class="renovation-click-container">
+                Renovation upgrades are really cool and nice.
+            </div>
+            
+        </div>
+
+
+
+        <div class="big-container" id="options-container">
+            <div class="options-click-container">
+                Watermelon Tree v0.1 was made with <b>love</b> by Clawrez 💜<br>
+                The game saves automatically every 15 seconds.<br>
+                Yes, I know watermelons don't grow on trees, but 'Watermelon Tree' sounds so much better than 'Watermelon Sprawling Vine'.<br><br>
+                <div class="options-click-button" id="saveButton" @click="save()">Save</div>
+                <div class="options-click-button" id="kiss" style="border-color:aqua;color:aqua;" @click="kiss()">Kiss Clawrez</div>
+                <div class="options-click-button" style="border-color:red;color:red;text-shadow:0 0 10px rgba(255,0,0,0.5)" @click="reset()">Reset</div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="js/vue.js"></script>
+<script src="js/player.js"></script>
+<script src="js/format.js"></script>
+<script src="js/loop.js"></script>
+<script src="js/index.js"></script>
+
+</html>

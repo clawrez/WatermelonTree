@@ -1,0 +1,254 @@
+* {
+    box-sizing: border-box;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+    color: rgb(200, 94, 119);
+    font-family: Jost;
+}
+
+#app {
+    width: 100%;
+    margin: auto;
+    background-color: rgb(20, 28, 40);
+}
+
+body {
+    background-color: rgb(20, 28, 40);
+}
+
+h1,h2,h3,h4,h5,h6 {
+    margin:0;
+  }
+
+.currency-container, .treeUpgrade-container {
+    display: flex;
+    justify-content: space-between;
+  
+}
+
+.container-heading {
+    width:100%;
+    height:auto;
+    text-align: center;
+    font-weight: bold;
+}
+
+.stats-container {
+    padding:8px;
+    width: 300px;
+    text-align: center;
+    height:100%;
+}
+
+.stats-container span {
+    display:block;
+}
+
+.watermelon-currency {
+    width: max-content;
+    /* border: 1px solid rgb(200, 94, 119); */
+    border: 2px solid rgb(200, 94, 119);  
+    background-color: rgb(200, 94, 119);
+    text-align: center;
+    color:rgb(20, 28, 40) !important;
+    margin: auto;
+    margin-bottom:-4px;
+    padding:4px;
+    padding-left:8px;
+    padding-right:8px;
+}
+
+.click-container {
+    text-align: center;
+    display:block;
+    margin: 8px;
+}
+
+.click-button {
+    display:inline-block;
+    width: 120px;
+    border: 2px solid rgb(200, 94, 119);  
+    background-color: rgb(30, 43, 61);
+    text-align: center;
+    margin: auto;
+    margin-bottom: 4px;
+    padding:4px;
+    transition: 0.7s;
+}
+
+.click-button:hover {
+    background-color: rgb(43, 61, 87);
+    transition: 0.1s;
+}
+
+.renovation-click-container {
+    text-align: center;
+    display:block;
+    margin: 8px;
+}
+
+.renovation-click-button {
+    display:inline-block;
+    width: auto;
+    border: 2px solid rgb(200, 94, 119);  
+    background-color: rgb(30, 43, 61);
+    text-align: center;
+    margin: auto;
+    margin-bottom: 4px;
+    padding:8px;
+    transition: 0.7s;
+}
+
+.renovation-click-button:hover {
+    background-color: rgb(43, 61, 87);
+    transition: 0.1s;
+}
+
+.options-click-container {
+    text-align: center;
+    display:block;
+    margin: 8px;
+}
+
+.options-click-button {
+    display:inline-block;
+    width: 150px;
+    border: 2px solid rgb(200, 94, 119);  
+    background-color: rgb(30, 43, 61);
+    text-align: center;
+    margin: auto;
+    margin-bottom: 4px;
+    padding:20px;
+    transition: 0.7s;
+}
+
+.options-click-button:hover {
+    background-color: rgb(43, 61, 87);
+    transition: 0.1s;
+}
+
+.menuButtons-container {
+    text-align: center;
+    display:block;
+    margin: 8px;
+    margin-top:-8px;
+    margin-bottom: 64px;
+}
+
+
+.menu-button {
+    display:inline-block;
+    width: 150px;
+    border: 2px solid rgb(70, 109, 164);  
+    background-color: rgb(30, 43, 61);
+    color: rgb(70, 109, 164);
+    text-align: center;
+    margin: auto;
+    margin-bottom: 4px;
+    padding:1px;
+    transition: 0.7s;
+}
+
+.menu-button:hover {
+    background-color: rgb(43, 61, 87);
+    transition: 0.1s;
+}
+
+
+
+
+
+
+#main-container {
+    display:inline-grid;
+    grid-template-columns: 33.3% 33.3% 33.3% 33.3%;
+}
+
+#renovation-container {
+    display:none;
+}
+
+#options-container {
+    display:none;
+}
+
+.treeUpgrade-concontainer, .moneyUpgrade-concontainer, .automationUpgrade-concontainer {
+    display: flex;
+    flex-direction:row;
+    flex-wrap: wrap;
+    width:275px;
+    align-items: center;
+    
+}
+
+.buy-treeUpgrade, .buy-moneyUpgrade, .buy-automationUpgrade {
+    color:gold;
+    transition: 0.7s;
+}
+
+.buy-treeUpgrade:hover, .buy-moneyUpgrade:hover, .buy-automationUpgrade:hover {
+    text-shadow:0 0 2px gold; 
+    transition: 0.1s;
+}
+
+.treeUpgrade, .moneyUpgrade, .automationUpgrade {
+    text-align: center;
+    border: 2px solid rgb(200, 94, 119);
+    background-image: linear-gradient(rgb(30, 43, 61), rgb(25, 35, 49));
+    /* background-color: rgb(30, 43, 61); */
+    width: 300px;
+    margin:4px;
+    padding: 8px;
+}
+
+.treeUpgrade span, .moneyUpgrade span, .automationUpgrade span {
+    display:block;
+}
+
+.buy-container span{
+    display:inline;
+}
+
+
+.renovate-button {
+    position: absolute;
+    text-align: center;
+    padding: 8px;
+    right: 72.5%;
+    width: 340px;
+    height: max-content;
+    color: #00d5f6;
+    background: #183243;
+    box-shadow: 0 0 10px inset rgb(49, 96, 117);
+    /* font-weight: bold; */
+    /* border: 1px solid #00d5f6; */
+    border-width: 2px;
+    border-style: solid;
+    border-image: linear-gradient(#11dfff, #09a4bc) 1;
+    z-index: 1;
+    transition: 0.7s;
+}
+
+.renovate-button:hover {
+    background-color: #00d5f6;
+    color: #183243; 
+    box-shadow: none;
+    transition: 0.1s;
+}
+
+
+.locked {
+    display:none;
+}
+
+@font-face {
+    font-family: Jost;
+    src: url("Jost-VariableFont_wght.ttf");
+}
+
+@font-face {
+    font-family: MonospaceTypewriter;
+    src: url("MonospaceTypewriter.ttf");
+}
+
