@@ -1,14 +1,17 @@
 
 var player = {
+    version: "0.1a",
     watermelons: 0, // main currency
     money: 0, // main currency 2
     watermelonYield: 1, // click to increment watermelons by this
     watermelonSellPrice: 1,
-    gardenCapacity: 20,
+    gardenCapacity: 100,
     sellerDayCounter: 1,
     treeUpgrades: [], // upgrade watermelon yield per day
     moneyUpgrades: [], // upgrade money yield
     automationUpgrades: [], // automate things
+    buyMax: false,
+    kisses: 0,
     renovate: { // prestige
         cost: 1000,
         renovatePointYield: 1,

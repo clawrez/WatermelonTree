@@ -40,6 +40,7 @@
                 Options
             </div>
         </div>
+        <div class="buyMax-container"><div class="click-button max-button" id="max-button" @click="toggleBuyMax()">Toggle Buy Max</div></div>
 
         <div class="big-container" id="main-container">
             
@@ -47,41 +48,45 @@
                 <span class="stat-Heading" style="font-weight: bold;">Statistics</span>
                 <span class="stat-yieldPerDay">You grow {{ zeroformat(player.watermelonYield) }} 🍉 per day.</span>
                 <span class="stat-watermelonSellPrice">One 🍉 sells for {{ twoformat(player.watermelonSellPrice) }} 💵.</span>
-                <span class="stat-gardenCapacity">Your garden can hold a total of 20 🍉.</span>
+                <span class="stat-gardenCapacity">Your garden can hold a total of {{ zeroformat(player.gardenCapacity) }} 🍉.</span>
+                <span class="stat-watermelonIdle">You produce {{ oneformat(player.automationUpgrades[0].effect*player.automationUpgrades[0].bought*player.watermelonYield) }} 🍉 per real second.</span>
             </div>
             
             <div class="treeUpgrade-container">
                 <div class="treeUpgrade-concontainer">
                     <div class="container-heading treeUpgradesHeading">Upgrade your 🍉 yield with more agricultural knowledge!<br>(Lots of 'Watermelon for Dummies')</div>
-                    <div class="treeUpgrade" v-for="(treeUpgrades, idx) in player.treeUpgrades">
+                    <div class="treeUpgrade" v-for="(treeUpgrades, idx) in player.treeUpgrades" @click="buyTree(idx)">
+                        <!-- <div class="buy-upgrade-container">
+                            <div class="buy-upgrade">Max</div>
+                        </div> -->
                         <h4>{{ treeUpgrades.name }} ({{ treeUpgrades.bought }})</h4>
                         <span class="treeUpgrade-cost">{{ twoformat(treeUpgrades.cost) }} 💵</span>
-                        <span class="treeUpgrade-yield">+{{ zeroformat(treeUpgrades.yield*treeUpgrades.bought) }} 🍉 per day</span>
-                        <div class="buy-container"><span class="buy-treeUpgrade" @click="buywatermelonTreeUpgrade(idx)">Buy 1</span> • <span class="buy-treeUpgrade" @click="buyMAXwatermelonTreeUpgrade(idx)">Buy Max</span></div>
+                        <span class="treeUpgrade-yield">+{{ zeroformat(treeUpgrades.yield) }} 🍉 per day</span>
+                        <!-- <div class="buy-container"><span class="buy-treeUpgrade" @click="buywatermelonTreeUpgrade(idx)">Buy 1</span> • <span class="buy-treeUpgrade" @click="buyMAXwatermelonTreeUpgrade(idx)">Buy Max</span></div> -->
                     </div>
                 </div>
             </div>
 
-            <div class="moneyUpgrade-container">
+            <div class="moneyUpgrade-container locked" id="money-upgrades">
                 <div class="moneyUpgrade-concontainer">
                     <div class="container-heading moneyUpgradesHeading">Increase your 💵 profit with very legal genetic altercations!<br>(It's the thought that counts)</div>
-                    <div class="moneyUpgrade" v-for="(moneyUpgrades, idx) in player.moneyUpgrades">
+                    <div class="moneyUpgrade" v-for="(moneyUpgrades, idx) in player.moneyUpgrades" @click="buyMoney(idx)">
                         <h4>{{ moneyUpgrades.name }} ({{ moneyUpgrades.bought }})</h4>
                         <span class="moneyUpgrade-cost">{{ twoformat(moneyUpgrades.cost) }} 💵</span>
-                        <span class="moneyUpgrade-yield">+{{ twoformat(moneyUpgrades.yield*moneyUpgrades.bought) }} 💵 per 🍉</span>
-                        <div class="buy-container"><span class="buy-moneyUpgrade" @click="buywatermelonMoneyUpgrade(idx)">Buy 1</span> • <span class="buy-moneyUpgrade" @click="buyMAXwatermelonMoneyUpgrade(idx)">Buy Max</span></div>
+                        <span class="moneyUpgrade-yield">+{{ twoformat(moneyUpgrades.yield) }} 💵 per 🍉</span>
+                        <!-- <div class="buy-container"><span class="buy-moneyUpgrade" @click="buywatermelonMoneyUpgrade(idx)">Buy 1</span> • <span class="buy-moneyUpgrade" @click="buyMAXwatermelonMoneyUpgrade(idx)">Buy Max</span></div> -->
                     </div>
                 </div>
             </div>
 
-            <div class="automationUpgrade-container">
+            <div class="automationUpgrade-container locked" id="automation-upgrades">
                 <div class="automationUpgrade-concontainer">
                     <div class="container-heading automationUpgradesHeading">Automate different processes to focus on other very important things!<br>(You lazy cunt)</div>
-                    <div class="automationUpgrade" id="autoUp0">
+                    <div class="automationUpgrade" id="autoUp0" @click="buyFA()">
                         <h4>{{ player.automationUpgrades[0].name }} ({{ player.automationUpgrades[0].bought }})</h4>
                         <span class="automationUpgrade-cost">{{ twoformat(player.automationUpgrades[0].cost) }} 💵</span>
-                        <span class="automationUpgrade-effect">Wait {{ oneformat(player.automationUpgrades[0].effect*player.automationUpgrades[0].bought) }} days every real second</span>
-                        <div class="buy-container"><span class="buy-automationUpgrade" @click="buyFirstAutomationUpgrade()">Buy 1</span> • <span class="buy-moneyUpgrade" @click="buyMAXFirstAutomationUpgrade()">Buy Max</span></div>
+                        <span class="automationUpgrade-effect">Wait +{{ oneformat(player.automationUpgrades[0].effect) }} days every real second</span>
+                        <!-- <div class="buy-container"><span class="buy-automationUpgrade" @click="buyFirstAutomationUpgrade()">Buy 1</span> • <span class="buy-moneyUpgrade" @click="buyMAXFirstAutomationUpgrade()">Buy Max</span></div> -->
                     </div>
 
                 </div>
@@ -102,12 +107,22 @@
 
         <div class="big-container" id="options-container">
             <div class="options-click-container">
-                Watermelon Tree v0.1 was made with <b>love</b> by Clawrez 💜<br>
+                Watermelon Tree v{{ player.version }} was made with <b>love</b> by Clawrez 💜<br>
                 The game saves automatically every 15 seconds.<br>
                 Yes, I know watermelons don't grow on trees, but 'Watermelon Tree' sounds so much better than 'Watermelon Sprawling Vine'.<br><br>
                 <div class="options-click-button" id="saveButton" @click="save()">Save</div>
-                <div class="options-click-button" id="kiss" style="border-color:aqua;color:aqua;" @click="kiss()">Kiss Clawrez</div>
+                <div class="options-click-button" id="kiss" style="border-color:aqua;color:aqua;" @click="kiss()">Kiss Clawrez ({{player.kisses}})</div>
                 <div class="options-click-button" style="border-color:red;color:red;text-shadow:0 0 10px rgba(255,0,0,0.5)" @click="reset()">Reset</div>
+                <p><b>v{{ player.version }} Changelog</b></p>
+                <p>PLEASE RESET YOUR SAVE (this will not be a thing in later updates, i promise. this will just make sure your capacity is at 100.)</p>
+                <ul>
+                    <li>The garden cap has been raised to 100.</li> <!-- done -->
+                    <li>You can see your total idle production under the Statistics heading.</li> <!-- done -->
+                    <li>Upgrades show what they will do, rather than what they are doing.</li> <!-- done -->
+                    <li>Buying upgrades is much better.</li> <!-- done -->
+                    <li>Upgrades unlock as you progress, rather than all being on the screen at once.</li> <!-- done -->
+                    <li>You can now see how many times you have kissed me 🥺.</li>
+                </ul>
             </div>
         </div>
     </div>

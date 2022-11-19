@@ -13,12 +13,32 @@ var app = new Vue({
             this.player.watermelons += this.player.watermelonYield*this.player.automationUpgrades[0].effect;
         },
         sell(){
+            if(this.player.watermelons < 0.5){return}
             this.player.money += this.player.watermelonSellPrice * this.player.watermelons;
             this.player.watermelons = 0;
+        },
+        toggleBuyMax(){
+            if (this.player.buyMax == false){
+                this.player.buyMax = true;
+                document.getElementById("max-button").style.borderColor = "rgb(175, 224, 110)";
+                document.getElementById("max-button").style.color = "rgb(175, 224, 110)";
+                return
+            }
+            if(this.player.buyMax == true){
+                this.player.buyMax = false;
+                document.getElementById("max-button").style.borderColor = "rgb(175, 75, 75)";
+                document.getElementById("max-button").style.color = "rgb(175, 75, 75)";
+                return
+            }
+        },
+        buyTree(i){
+            if (this.player.buyMax){this.buyMAXwatermelonTreeUpgrade(i)}
+            if (!this.player.buyMax){this.buywatermelonTreeUpgrade(i)}
         },
         buywatermelonTreeUpgrade(i) {
             let g = this.player.treeUpgrades[i]
             if(g.cost > this.player.money){return};
+            this.checkLocked();
             this.player.money -= g.cost;
             this.player.treeUpgrades[i].cost *= 1 + (i+1)*1.55
             this.player.treeUpgrades[i].bought++
@@ -29,9 +49,14 @@ var app = new Vue({
             while(g.cost <= this.player.money){this.buywatermelonTreeUpgrade(i)};
             // return
         },
+        buyMoney(i){
+            if (this.player.buyMax){this.buyMAXwatermelonMoneyUpgrade(i)}
+            if (!this.player.buyMax){this.buywatermelonMoneyUpgrade(i)}
+        },
         buywatermelonMoneyUpgrade(i) {
             let g = this.player.moneyUpgrades[i]
             if(g.cost > this.player.money){return};
+            this.checkLocked();
             this.player.money -= g.cost;
             this.player.moneyUpgrades[i].cost *= 1 + ((i/5)+1)*1.25
             this.player.moneyUpgrades[i].bought++
@@ -42,9 +67,14 @@ var app = new Vue({
             while(g.cost <= this.player.money){this.buywatermelonMoneyUpgrade(i)};
             // return
         },
+        buyFA(){
+            if (this.player.buyMax){this.buyMAXFirstAutomationUpgrade()}
+            if (!this.player.buyMax){this.buyFirstAutomationUpgrade()}
+        },
         buyFirstAutomationUpgrade(){
             let g = this.player.automationUpgrades[0]
             if(g.cost > this.player.money){return};
+            this.checkLocked();
             this.player.money -= g.cost;
             this.player.automationUpgrades[0].cost *= 1.5 + ((1/7.5))*1.75
             this.player.automationUpgrades[0].bought++
@@ -73,7 +103,7 @@ var app = new Vue({
             document.getElementById("renovation-container").style.display = "none";
             document.getElementById("options-container").style.display = "none";
 
-            x.style.display = "inline-grid";
+            x.style.display = "flex";
             }
         },
         renovationMenu() {
@@ -119,11 +149,30 @@ var app = new Vue({
         kiss(){
             x = document.getElementById("kiss")
             x.innerHTML = "*mwah*"
-            setTimeout(() => {  x.innerHTML = "Kiss Clawrez"; }, 1000);
+            this.player.kisses ++
+            setTimeout(() => {  x.innerHTML = "Kiss Clawrez (" + this.player.kisses + ")"; }, 1000);
+            
+        },
+        checkLocked(){
+            if(this.player.treeUpgrades[0].bought != 0){
+                document.getElementById("money-upgrades").classList.remove("locked")
+            }
+            if(this.player.moneyUpgrades[0].bought != 0){
+                document.getElementById("automation-upgrades").classList.remove("locked")
+            }
+        },
+        checkVersion(){
+            if (this.player.version != "0.1a"){
+                this.player.version = "0.1a"
+            }
         }
         },
     mounted(){
         this.load();
+        this.checkLocked();
+        this.checkVersion();
+        this.toggleBuyMax();
+        this.toggleBuyMax();
         setInterval(this.gameLoop, 50);
         setInterval(this.save, 15000);
     }
